@@ -12,6 +12,13 @@ var ctx = canvas.getContext('2d');
  var paddleHeight = 10;
  var paddleWidth = 75;
  var paddleX = (canvas.width - paddleWidth) / 2;
+ // paddle movement dedection
+ var rightPressed = false;
+ var leftPressed = false;
+
+ // listen to the keys to catch them
+ document.addEventListener("keydown", keyDownHandler);
+ document.addEventListener("keyup", keyUpHandler);
 
 function drawBall(){
    ctx.beginPath();
@@ -19,6 +26,20 @@ function drawBall(){
    ctx.fillstyle = 'green';
    ctx.fill();
    ctx.closePath;
+}
+function keyDownHandler(e){
+  if(e.keyCode == 39){
+    rightPressed = true;
+  } else if(e.keyCode == 37){
+    leftPressed = true;
+  }
+}
+function keyUpHandler(e){
+  if(e.keyCode == 39){
+    rightPressed = false;
+  } else if(e.keyCode == 37){
+    leftPressed = false;    
+  }
 }
 function drawPaddle(){
   ctx.beginPath();
@@ -29,7 +50,7 @@ function drawPaddle(){
 }
 
 function playGame(){
-  ctx.clearRect(0,0,canvas.width,canvas.hight);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   drawPaddle();
   drawBall();
   if(y + dy < ballRadious){
@@ -39,11 +60,16 @@ function playGame(){
       dy = -dy;
     } else {
       alert("Game Over");
-      document.location.reload();
+      //document.reload();
     }
   }
-  if((x+dx > canvas.width-ballRadious) || (x+dx < ballRadious)){
+  if((x + dx > canvas.width-ballRadious) || (x + dx < ballRadious)){
     dx = -dx;
+  }
+  if(rightPressed && paddleX < canvas.width - paddleWidth){
+    paddleX += 7;
+  } else if(leftPressed && paddleX > 0 ){
+    paddleX -=7;
   }
 
   x += dx;
