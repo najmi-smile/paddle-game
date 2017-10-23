@@ -16,3 +16,19 @@ function drawBall(){
    ctx.fill();
    ctx.closePath;
 }
+
+function playGame(){
+
+  drawBall();
+  if(y+dy < ballRadious){
+    dy = -dy;
+  } 
+  if((x+dx > canvas.width-ballRadious) || (x+dx < ballRadious)){
+    dx = -dx;
+  }
+
+  x += dx;
+  y += dy;
+
+}
+setInterval(playGame, 15);
