@@ -54,6 +54,19 @@ function drawBricks(){
     }
   }
 }
+function brickCollisionDetector(){
+  for(var c = 0;c < brickColumnCount; c++){
+    for(var r = 0; r < brickRowCount; r++){
+      
+      if(bricks[c][r].status == 1){
+        if((x > bricks[c][r].x && x < bricks[c][r].x + brickWidth) && (y > bricks[c][r].y && y < bricks[c][r].y + brickHeight)){
+          dy = -dy;
+          bricks[c][r].status = 0;
+        }
+      }
+    }
+  }
+}
 function drawBall(){
    ctx.beginPath();
    ctx.arc(x,y,ballRadious,0,Math.PI*2,false);
@@ -88,6 +101,7 @@ function playGame(){
   drawBricks();
   drawPaddle();
   drawBall();
+  brickCollisionDetector();
   if(y + dy < ballRadious){
     dy = -dy;
   } else if(y + dy > canvas.height-ballRadious){
