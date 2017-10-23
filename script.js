@@ -16,10 +16,44 @@ var ctx = canvas.getContext('2d');
  var rightPressed = false;
  var leftPressed = false;
 
- // listen to the keys to catch them
- document.addEventListener("keydown", keyDownHandler);
- document.addEventListener("keyup", keyUpHandler);
+// bricks environment
+var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickHeight = 20;
+var brickWidth = 75;
+var brickPadding = 5;
+var brickOffsetTop = 5;
+var brickOffsetLeft = 5
 
+var bricks = [];
+for(var c = 0; c<brickColumnCount; c++){
+  bricks[c] = [];
+  for(var r = 0; r<brickRowCount;r++){
+    bricks[c][r] = {x:0, y:0, status:1};
+  }
+}
+
+// listen to the keys to catch them
+document.addEventListener("keydown", keyDownHandler);
+document.addEventListener("keyup", keyUpHandler);
+
+function drawBricks(){
+  for(var c = 0; c < brickColumnCount; c++){
+    for(var r = 0; r < brickRowCount;r++){
+      if(bricks[c][r].status == 1){
+        var brickX = (c*(brickWidth + brickPadding)) + brickOffsetLeft;
+        var brickY = (r*(brickHeight + brickPadding)) + brickOffsetTop;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.beginPath();
+        ctx.rect(brickX,brickY, brickWidth, brickHeight);
+        ctx.fillstyle = 'green';
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+  }
+}
 function drawBall(){
    ctx.beginPath();
    ctx.arc(x,y,ballRadious,0,Math.PI*2,false);
@@ -51,6 +85,7 @@ function drawPaddle(){
 
 function playGame(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawBricks();
   drawPaddle();
   drawBall();
   if(y + dy < ballRadious){
@@ -60,7 +95,7 @@ function playGame(){
       dy = -dy;
     } else {
       alert("Game Over");
-      //document.reload();
+      document.location.reload();
     }
   }
   if((x + dx > canvas.width-ballRadious) || (x + dx < ballRadious)){
@@ -69,11 +104,11 @@ function playGame(){
   if(rightPressed && paddleX < canvas.width - paddleWidth){
     paddleX += 7;
   } else if(leftPressed && paddleX > 0 ){
-    paddleX -=7;
+    paddleX -= 7;
   }
 
   x += dx;
   y += dy;
 
 }
-setInterval(playGame, 15);
+setInterval(playGame, 25);
