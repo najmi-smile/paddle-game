@@ -32,6 +32,8 @@ for(var c = 0; c<brickColumnCount; c++){
     bricks[c][r] = {x:0, y:0, status:1};
   }
 }
+// score var to keep track of progress
+var score = 0;
 
 // listen to the keys to catch them
 document.addEventListener("keydown", keyDownHandler);
@@ -95,6 +97,11 @@ function drawPaddle(){
   ctx.fill();
   ctx.closePath();
 }
+function drawScore(){
+  ctx.font = "16px Arial";
+  ctx.fillstyle = "#0095DD";
+  ctx.fillText("Score: "+ score, 8,90);
+}
 
 function playGame(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -102,6 +109,7 @@ function playGame(){
   drawPaddle();
   drawBall();
   brickCollisionDetector();
+  drawScore();
   if(y + dy < ballRadious){
     dy = -dy;
   } else if(y + dy > canvas.height-ballRadious){
