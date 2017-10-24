@@ -64,6 +64,11 @@ function brickCollisionDetector(){
         if((x > bricks[c][r].x && x < bricks[c][r].x + brickWidth) && (y > bricks[c][r].y && y < bricks[c][r].y + brickHeight)){
           dy = -dy;
           bricks[c][r].status = 0;
+          score++;
+          if(score == brickRowCount * brickColumnCount){
+            alert("Youu WON! Congradulation");
+            window.location.reload();
+          }
         }
       }
     }
@@ -117,7 +122,7 @@ function playGame(){
       dy = -dy;
     } else {
       alert("Game Over");
-      document.location.reload();
+      window.location.reload();
     }
   }
   if((x + dx > canvas.width-ballRadious) || (x + dx < ballRadious)){
